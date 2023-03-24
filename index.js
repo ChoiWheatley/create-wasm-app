@@ -19,8 +19,8 @@ canvas.width = (CELL_SIZE + 1) * width + 1;
 const ctx = canvas.getContext("2d");
 
 const fps = 60;
-const fpsInterval = 1000 / 12;
-var now, then, elapsed;
+const fpsInterval = Math.round(1000 / fps / 16.66);
+let frameCount = 0;
 
 const getIndex = (row, column) => {
   return row * width + column;
@@ -74,22 +74,18 @@ const drawGrid = () => {
   ctx.stroke();
 };
 
-const renderLoop = (newtime) => {
-  requestAnimationFrame(renderLoop);
-
-  now = newtime;
-  elapsed = now - then;
-  if (elapsed > fpsInterval) {
-    then = now - (elapsed % fpsInterval);
+const renderLoop = () => {
+  frameCount++;
+  if (frameCount % fpsInterval === 0) {
+    frameCount = 0;
     universe.tick();
-
     drawGrid();
     drawCells();
   }
+  requestAnimationFrame(renderLoop);
 };
 
 // Start the rendering process
-then = window.performance.now();
 drawGrid();
 drawCells();
 requestAnimationFrame(renderLoop);
