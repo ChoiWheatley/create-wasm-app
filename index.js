@@ -1,4 +1,4 @@
-import { Universe, Cell } from "game-of-life-wasm";
+import { Universe } from "game-of-life-wasm";
 import { memory } from "game-of-life-wasm/game_of_life_wasm_bg";
 
 const CELL_SIZE = 5; // px
@@ -6,9 +6,9 @@ const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
 
-const width = 256;
-const height = 256;
-const universe = Universe.new(width, height);
+const width = 100;
+const height = 100;
+const universe = Universe.with_random_start(width, height, 0.08);
 
 // Give the canvas room for all of our cells and a 1px border
 // around each of them.
@@ -18,9 +18,21 @@ canvas.width = (CELL_SIZE + 1) * width + 1;
 
 const ctx = canvas.getContext("2d");
 
-const fps = 60;
+const fps = 30;
 const fpsInterval = Math.round(1000 / fps / 16.66);
 let frameCount = 0;
+
+// initial cells
+const init_rows = [1, 2, 3, 3, 3];
+const init_cols = [2, 3, 1, 2, 3];
+
+const set_universe = (rows, cols) => {
+  for (let idx = 0; idx < rows.length; idx++) {
+    let row = rows[idx];
+    let col = cols[idx];
+    universe.set_cell(row, col);
+  }
+};
 
 const getIndex = (row, column) => {
   return row * width + column;
@@ -86,6 +98,7 @@ const renderLoop = () => {
 };
 
 // Start the rendering process
+set_universe(init_rows, init_cols);
 drawGrid();
 drawCells();
 requestAnimationFrame(renderLoop);
