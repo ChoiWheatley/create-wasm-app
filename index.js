@@ -6,9 +6,9 @@ const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
 
-const width = 100;
-const height = 100;
-const universe = Universe.with_random_start(width, height, 0.08);
+const width = 256;
+const height = 256;
+const universe = Universe.with_random_start(width, height, 0.28);
 
 // Give the canvas room for all of our cells and a 1px border
 // around each of them.
