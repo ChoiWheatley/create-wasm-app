@@ -1,4 +1,4 @@
-import { Universe } from "game-of-life-wasm";
+import { set_panic_hook, Universe } from "game-of-life-wasm";
 import { memory } from "game-of-life-wasm/game_of_life_wasm_bg";
 
 const CELL_SIZE = 5; // px
@@ -96,6 +96,9 @@ const renderLoop = () => {
   }
   requestAnimationFrame(renderLoop);
 };
+
+// for debuging, we set the panic hook
+set_panic_hook();
 
 // Start the rendering process
 set_universe(init_rows, init_cols);
